@@ -1,0 +1,47 @@
+h1 {
+  font-weight: normal;
+  font-size: 20em;
+  margin: 0;
+}
+
+h1.shine {
+  text-shadow: 0 0 30px white;
+}
+html, body {
+min-height: 100%;
+/*overflow: hidden;*/
+}
+body {
+  background: -moz-linear-gradient(-90deg, black, #191a27 60%, #545464);
+  padding: 0px;
+  margin: 0px;
+  border: 0px none;
+  min-height: 100%;
+  font-smooth: always;
+  color: white;
+  font-family: Gill Sans MT;
+  
+  
+  -moz-user-select:none;
+
+}
+
+#info {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  color: #ccc;
+  font-size: 27px;
+}
+
+.slide {
+  padding: 100px;
+  min-height: 600px;
+  
+  
+  cursor:default;
+}
+
+#presentation {
+  height: 100%;
+}
