@@ -8,87 +8,21 @@
   
   <script src="highlight/sh_main.min.js"></script>
   <script src="highlight/sh_ruby.min.js"></script>
+  <script src="highlight/sh_javascript.js"></script>
   <link rel="stylesheet" href="highlight/sh_greenlcd.css" />
+  
+  <script src="showdown.js"></script>
+  <script src="presi.js"></script>
 </head>
 
 
 <body>
   <script>
-  currentSlide = 0;
-  currentRevealStep = -1;
-    $(window).load(function () {
-      sh_highlightDocument();
-      $("[data-reveal]").hide();
-      //setup manual jquery cycle
-      $('#presentation').cycle({
-        timeout: 0,
-        speed:       600,  // speed of the transition (any valid fx speed value) 
-        ease: 'easeOutQuad'
-      })
-      
-      updateInfo();
-      
-      $(window).keydown(function(event) {
-        var key = event.keyCode;
-        if (key == 37 || key == 33 || key == 38) // Left arrow, page up, or up arrow
-        {
-          prevStep()
-        }
-        else if (key == 39 || key == 34 || key == 40) // Right arrow, page down, or down arrow
-        {
-          nextStep()
-        }
-      })
-    })
-    
-    function nextStep() {
-      reveals = getSlide(currentSlide, true).find("[data-reveal]")
-      
-      if(currentRevealStep < reveals.length - 1 && !getSlide(currentSlide, true).hasClass('shown')) 
-        {
-          currentRevealStep++
-          $(reveals[currentRevealStep]).show()
-          
-        }
-      else if(getSlide(currentSlide+1)) {
-        getSlide(currentSlide, true).addClass('shown')
-        currentSlide++;
-        currentRevealStep = -1;
-        $('#presentation').cycle(currentSlide, 'scrollUp')
-      }
-      updateInfo();
-    }
-    
-    function getSlide(num, jq) {
-      x = $("#presentation .slide")[num]
-      if(jq)
-        x = $(x)
-      return x;
-    }
-    
-    function prevStep() {
-      reveals = getSlide(currentSlide, true).find("[data-reveal]")
-      if(currentRevealStep > -1 && !getSlide(currentSlide, true).hasClass('shown')) { // we have stepped
-        $(reveals[currentRevealStep]).hide()
-        currentRevealStep--;
-      }
-      else if(getSlide(currentSlide-1)) {
-        if(currentRevealStep == reveals.length - 1)
-          getSlide(currentSlide, true).addClass('shown')
-        currentSlide--;
-        currentRevealStep = -1;        
-        $('#presentation').cycle(currentSlide, 'scrollDown')
-      }
-      updateInfo();
-    }
-    
-    function updateInfo() {
-      $("#info").html(currentSlide+1 + "/" + $("#presentation .slide").length)
-    }
+
   </script>
   <div id="info">OHAI</div>
   <div id="presentation">
-    <div class="slide">
+   <!-- <div class="slide">
       <h1 class="shine">Ruby</h1>
       <h2 data-reveal="true">ist ziemlich cool</h2>
       <pre class="sh_ruby" data-reveal="true">
@@ -107,7 +41,7 @@ end</pre>
       <h1>Python</h1>
       <h2 data-reveal="true">ist ganz aus dem Spiel.</h2>
     </div>
-    
+  -->
   </div>
   </body>
 </html>
