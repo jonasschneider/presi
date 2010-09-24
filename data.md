@@ -4,8 +4,9 @@
     #for highlighted ruby
   end
 @@
+and @@javascript .. @@
 @@javascript
-  alert("or javascript!")
+  alert("for javascript!")
 @@
 
 ++
