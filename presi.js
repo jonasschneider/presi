@@ -32,14 +32,14 @@ $(window).load(function () {
     })
     
     $("[data-reveal]").hide();
-    
+    $("#presentation").show()
     //setup manual jquery cycle
     $('#presentation').cycle({
       timeout: 0,
       speed: 300,
       ease: 'easeOutCubic'
     })
-    
+    $("#presentation").hide()
     sh_highlightDocument();
     updateInfo();
     
@@ -69,6 +69,7 @@ $(window).load(function () {
     
     $("#loading").fadeOut(function () {
       $("#presentation").fadeIn()
+      $("#info").fadeIn()
     })
   })
 })
