@@ -36,6 +36,10 @@ adds some `classes` to your slide
 
 ++incremental+
 ## \++incremental+ ##
-makes your bullets appear one by one
+makes your bullets appear
+
+* one
+* by
+* one
 
 ++markdown applies.
