@@ -13,7 +13,10 @@ html {
   min-height: 100%;
 }
 body {
-  background: -moz-linear-gradient(-90deg, black, #191a27 60%, #545464);
+  background: -moz-linear-gradient(center top , rgb(0, 0, 0) 0%, rgb(25, 26, 39) 60%, rgb(84, 84, 100) 100%);
+  background: -webkit-gradient(    linear,    left top,    left bottom,    color-stop(0, rgb(0,0,0)),    color-stop(0.6, rgb(25,26,39)),    color-stop(1, rgb(84,84,100)));
+
+
   padding: 0px;
   margin: 0px;
   border: 0px none;
@@ -21,7 +24,7 @@ body {
   font-size: 4em;
   color: white;
   font-family: Gill Sans MT;
-  
+  overflow: hidden;
   
   -moz-user-select:none;
 
