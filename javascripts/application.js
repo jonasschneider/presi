@@ -2,7 +2,7 @@ currentSlide = 0;
 currentRevealStep = -1;
 $(window).load(function () {
   $("#loading").fadeIn();
-  $.get("data.md", function(data) {
+  $.get("presentation.md", function(data) {
     conv = new Showdown.converter();
     slides = data.split(/\n[^\\]\+\+/)
     
