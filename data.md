@@ -1,17 +1,6 @@
 
-!Introduction
-
-++
-## @@ruby ___code___ @@ ##
-@@ruby
-  def ohai()
-    #for highlighted ruby
-  end
-@@
-and @@javascript .. @@
-@@javascript
-  alert("for javascript!")
-@@
+!A Quick
+introduction.
 
 ++
 !\++
@@ -46,4 +35,14 @@ makes your bullets appear
 * by
 * one
 
-++markdown applies.
+++
+## @@ruby ___code___ @@ ##
+@@ruby
+  def ohai()
+    #for highlighted ruby
+  end
+@@
+and @@javascript .. @@
+@@javascript
+  alert("for javascript!")
+@@
