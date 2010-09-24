@@ -12,9 +12,10 @@ h1.shine {
 html {
   min-height: 100%;
 }
+
 body {
   background: -moz-linear-gradient(center top , rgb(0, 0, 0) 0%, rgb(25, 26, 39) 60%, rgb(84, 84, 100) 100%);
-  background: -webkit-gradient(    linear,    left top,    left bottom,    color-stop(0, rgb(0,0,0)),    color-stop(0.6, rgb(25,26,39)),    color-stop(1, rgb(84,84,100)));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(0,0,0)), color-stop(0.6, rgb(25,26,39)), color-stop(1, rgb(84,84,100)));
 
 
   padding: 0px;

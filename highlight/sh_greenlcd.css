@@ -1,12 +1,15 @@
 pre.sh_sourceCode {
   background: -moz-linear-gradient(-90deg, #323242, #191a27);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.32, rgb(50,50,66)), color-stop(0.66, rgb(25,26,39)));
   -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
   color: #eee;
   font-weight: normal;
   font-style: normal;
   padding: 20px 30px 20px 10px;
   font-size: 20px;
   -moz-box-shadow: 0 0 8px gray;
+  -webkit-box-shadow: 0 0 8px gray;
 }
 
 pre.sh_sourceCode .sh_keyword {
