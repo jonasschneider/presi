@@ -52,6 +52,10 @@ $(window).load(function () {
       {
         nextStep()
       }
+      else if (key == 116) // F5
+      { 
+        event.preventDefault()
+      }
     })
   })
 })
