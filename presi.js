@@ -1,6 +1,7 @@
 currentSlide = 0;
 currentRevealStep = -1;
 $(window).load(function () {
+  $("#loading").fadeIn();
   $.get("data.md", function(data) {
     conv = new Showdown.converter();
     slides = data.split(/\n[^\\]\+\+/)
@@ -31,31 +32,43 @@ $(window).load(function () {
     })
     
     $("[data-reveal]").hide();
+    
     //setup manual jquery cycle
     $('#presentation').cycle({
       timeout: 0,
-      speed:       300,  // speed of the transition (any valid fx speed value) 
-      ease: 'easeOutQuad'
+      speed: 300,
+      ease: 'easeOutCubic'
     })
     
     sh_highlightDocument();
-    
     updateInfo();
     
     $(window).keydown(function(event) {
       var key = event.keyCode;
+      
       if (key == 37 || key == 33 || key == 38) // Left arrow, page up, or up arrow
-      {
         prevStep()
-      }
+      
       else if (key == 39 || key == 34 || key == 40) // Right arrow, page down, or down arrow
-      {
         nextStep()
-      }
-      else if (key == 116) // F5
-      { 
+      
+      else if (key == 116) // F5, laser pointer on kensington
         event.preventDefault()
+      
+      else if (key == 66) { // b, stop button on kensington
+        if($("#presentation:visible")[0])
+          $("#presentation").fadeOut(function() {
+            $("#overlay").fadeIn()
+          })
+        else
+          $("#overlay").fadeOut(function() {
+            $("#presentation").fadeIn()
+          })
       }
+    })
+    
+    $("#loading").fadeOut(function () {
+      $("#presentation").fadeIn()
     })
   })
 })
