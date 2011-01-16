@@ -1,5 +1,6 @@
 currentSlide = 0;
 currentRevealStep = -1;
+
 $(window).load(function () {
   $("#loading").fadeIn();
   $.get("presentation.md", function(data) {
@@ -11,13 +12,18 @@ $(window).load(function () {
       classes = (a=this.match(/^([a-zA-Z ]+)\+/)) && a[1].split(" ") || []
       text = text.replace (/^([a-zA-Z ]+)\+/, '')
       
-      text = text.replace(/\n\!(.+)/, "# $1 #")
+      text = text.replace(/@@(ruby|javascript)\n((.*?\n)+?)@@/g, function(x, lang, code) {
+        return '<pre class="sh_'+lang+'">'+code.replace("!", "\\!")+'</pre>' 
+      })
       
-      text = text.replace(/[^\\]\%(.+)/g, "<span data-reveal='true'>$1</span>")
+      
+      text = text.replace(/(\n|^)[^\\]\!(.+)/, "# $2 #")
+      text = text.replace('\\!', '!')
+      
+      text = text.replace(/\n[^\\]\%(.+)/g, "<span data-reveal='true'>$1</span>")
       text = text.replace('\\%', '%')
       
       //console.log(text.match())
-      text = text.replace(/@@(ruby|javascript)\n((.*?\n)+?)@@/g, '<pre class="sh_$1">$2</pre>')
       
       
       html = conv.makeHtml(text)
@@ -31,7 +37,7 @@ $(window).load(function () {
       $('#presentation').append(slide)
     })
     
-    $("[data-reveal]").hide();
+    $("[data-reveal]").css("visibility", "hidden");
     $("#presentation").show()
     //setup manual jquery cycle
     $('#presentation').cycle({
@@ -41,7 +47,6 @@ $(window).load(function () {
     })
     $("#presentation").hide()
     sh_highlightDocument();
-    updateInfo();
     
     $(window).keydown(function(event) {
       var key = event.keyCode;
@@ -65,14 +70,51 @@ $(window).load(function () {
             $("#presentation").fadeIn()
           })
       }
+      
+      saveState();
     })
     
+    
+    if (window.location.hash.length > 1) {
+  		var page = window.location.hash.split("#")[1];
+  		loadState(page);
+  	}
+  	
+  	
+    updateInfo();
+	
     $("#loading").fadeOut(function () {
       $("#presentation").fadeIn()
       $("#info").fadeIn()
     })
+    
+    
   })
+  
 })
+
+function loadState(state) {
+  currentSlide = parseInt(state.split(".")[0]);
+  currentRevealStep = -1;
+  var times_stepped = parseInt(state.split(".")[1]);
+  
+  for(var i = 0; i < times_stepped; i++)
+    nextStep();
+  
+  if(currentRevealStep == getSlide(currentSlide, true).find("[data-reveal]").length - 1)
+    getSlide(currentSlide, true).addClass('shown')
+  
+  $('#presentation').cycle(currentSlide, 'scrollDown');
+}
+
+function saveState() {
+  if(currentRevealStep > -1)
+    revealPart = "."+(currentRevealStep+1)
+  else
+    revealPart = "";
+  window.location.hash = "#"+currentSlide+revealPart
+}
+
 
 function nextStep() {
   reveals = getSlide(currentSlide, true).find("[data-reveal]")
@@ -80,7 +122,7 @@ function nextStep() {
   if(currentRevealStep < reveals.length - 1 && !getSlide(currentSlide, true).hasClass('shown')) 
     {
       currentRevealStep++
-      $(reveals[currentRevealStep]).show()
+      $(reveals[currentRevealStep]).css("visibility", "visible")
       
     }
   else if(getSlide(currentSlide+1)) {
@@ -88,6 +130,8 @@ function nextStep() {
     currentSlide++;
     currentRevealStep = -1;
     $('#presentation').cycle(currentSlide, 'scrollUp')
+    if(getSlide(currentSlide, true).hasClass('shown'))
+      currentRevealStep = getSlide(currentSlide, true).find("[data-reveal]").length - 1
   }
   updateInfo();
 }
@@ -102,7 +146,7 @@ function getSlide(num, jq) {
 function prevStep() {
   reveals = getSlide(currentSlide, true).find("[data-reveal]")
   if(currentRevealStep > -1 && !getSlide(currentSlide, true).hasClass('shown')) { // we have stepped
-    $(reveals[currentRevealStep]).hide()
+    $(reveals[currentRevealStep]).css("visibility", "hidden")
     currentRevealStep--;
   }
   else if(getSlide(currentSlide-1)) {
@@ -111,6 +155,9 @@ function prevStep() {
     currentSlide--;
     currentRevealStep = -1;        
     $('#presentation').cycle(currentSlide, 'scrollDown')
+    
+    if(getSlide(currentSlide, true).hasClass('shown'))
+      currentRevealStep = getSlide(currentSlide, true).find("[data-reveal]").length - 1
   }
   updateInfo();
 }

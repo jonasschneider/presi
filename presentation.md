@@ -1,6 +1,6 @@
 
-!A Quick
-introduction.
+!_A_ **Quick**
+_**introduction**_.
 
 ++
 !\++
@@ -14,7 +14,7 @@ makes headings
 !\%
 hides something
 
-and shows it incrementally
+% and shows it incrementally
 
 ++
 !*
@@ -44,5 +44,5 @@ makes your bullets appear
 @@
 and @@javascript .. @@
 @@javascript
-  alert("for javascript!")
+  alert("ohai world!") // for javascript!
 @@
