@@ -3,6 +3,8 @@ var currentRevealStep = -1;
 var maxSlideHeight = 0;
 
 $(window).load(function () {
+  maxSlideHeight = $("#presentation").height()
+  
   $("#loading").fadeIn();
   $.get("presentation.md", function(data) {
     conv = new Showdown.converter();
@@ -67,20 +69,6 @@ $(window).load(function () {
         goToSlide($("#presentation .slide").length-1)
       
     })
-    
-    // Show the presentation for a sec to determine the maximum slide height
-    $("#presentation").show()
-    $("#presentation .slide").each(function() {
-      if($(this).height() > maxSlideHeight)
-        maxSlideHeight = $(this).height()
-    });
-    $("#presentation").hide()
-    
-    
-    // Set up the container and slides
-    $("#presentation").css({ position: 'relative', "height": maxSlideHeight })
-    $("#presentation .slide").hide().css({ position: 'absolute', height: maxSlideHeight })
-    
     
     // Load a position from hash or start at the first slide
     if (window.location.hash.length > 1) {

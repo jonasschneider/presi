@@ -86,12 +86,14 @@ li {
 
 .slide {
   padding: 200px 0 0 100px;
-  min-height: 600px;
+  height: 100%;
+  position: absolute;
   
   text-shadow: white 0px 0px 1px;
-  cursor:default;
+  cursor: default;
 }
 
 #presentation {
   height: 100%;
+  position: relative;
 }
