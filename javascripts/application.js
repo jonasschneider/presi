@@ -209,7 +209,6 @@ function prevSlide() {
 }
 
 function goToSlide(num) {
-  console.log("going to slide "+num)
   currentSlide = num;
   $(".slide").hide();
   $($(".slide")[currentSlide]).show().css({top: 0})
