@@ -17,15 +17,11 @@ $(window).load(function () {
         return '<pre class="sh_'+lang+'">'+code.replace("!", "\\!")+'</pre>' 
       })
       
-      
       text = text.replace(/(\n|^)[^\\]\!(.+)/, "# $2 #")
       text = text.replace('\\!', '!')
       
       text = text.replace(/\n[^\\]\%(.+)/g, "<span data-reveal='true'>$1</span>")
       text = text.replace('\\%', '%')
-      
-      //console.log(text.match())
-      
       
       html = conv.makeHtml(text)
       
@@ -63,57 +59,58 @@ $(window).load(function () {
           $("#overlay").fadeOut(function() {
             $("#presentation").fadeIn()
           })
-      }
+          
+      } else if (key == 36) // Pos1
+        goToSlide(0)
       
-      saveState();
+      else if (key == 35) // End
+        goToSlide($("#presentation .slide").length-1)
+      
     })
     
-    
-    if (window.location.hash.length > 1) {
-  		var page = window.location.hash.split("#")[1];
-  		loadState(page);
-  	}
-  	
-  	
-    updateInfo();
-	
-    $("#loading").fadeOut(function () {
-      $("#presentation").fadeIn()
-      $("#info").fadeIn()
-    })
-    
-    $("#presentation .slide").css({ position: 'absolute' })
-    
+    // Show the presentation for a sec to determine the maximum slide height
     $("#presentation").show()
     $("#presentation .slide").each(function() {
       if($(this).height() > maxSlideHeight)
         maxSlideHeight = $(this).height()
     });
     $("#presentation").hide()
-    $("#presentation .slide").hide()
     
-    $($(".slide")[0]).show()
     
-    $(".slide").css({ height: maxSlideHeight })
-    
+    // Set up the container and slides
     $("#presentation").css({ position: 'relative', "height": maxSlideHeight })
+    $("#presentation .slide").hide().css({ position: 'absolute', height: maxSlideHeight })
+    
+    
+    // Load a position from hash or start at the first slide
+    if (window.location.hash.length > 1) {
+  		var page = window.location.hash.split("#")[1]
+  		loadState(page)
+  	} else
+  	  goToSlide(0)
+  	
+  	  
+  	// Showtime!
+  	$("#loading").fadeOut(function () {
+      $("#presentation").fadeIn()
+      $("#info").fadeIn()
+    })
     
   })
   
 })
 
 function loadState(state) {
-  currentSlide = parseInt(state.split(".")[0]);
-  currentRevealStep = -1;
+  var newSlide = parseInt(state.split(".")[0]);
   var times_stepped = parseInt(state.split(".")[1]);
+  
+  goToSlide(newSlide)
   
   for(var i = 0; i < times_stepped; i++)
     nextStep();
   
   if(currentRevealStep == getSlide(currentSlide, true).find("[data-reveal]").length - 1)
     getSlide(currentSlide, true).addClass('shown')
-  
-  $('#presentation').cycle(currentSlide, 'scrollDown');
 }
 
 function saveState() {
@@ -136,7 +133,6 @@ function nextStep() {
     }
   else if(getSlide(currentSlide+1)) {
     getSlide(currentSlide, true).addClass('shown')
-    currentRevealStep = -1;
     
     nextSlide();
     
@@ -163,8 +159,6 @@ function prevStep() {
     if(currentRevealStep == reveals.length - 1)
       getSlide(currentSlide, true).addClass('shown')
     
-    currentRevealStep = -1;
-    
     prevSlide();
     
     if(getSlide(currentSlide, true).hasClass('shown'))
@@ -175,6 +169,7 @@ function prevStep() {
 
 function updateInfo() {
   $("#info").html(currentSlide+1 + "/" + $("#presentation .slide").length)
+  saveState()
 }
 
 var transitionDuration = 150;
@@ -184,11 +179,15 @@ function nextSlide() {
     
     $($(".slide")[currentSlide]).animate({top: -maxSlideHeight}, transitionDuration, function() {
       $(this).hide()
+      updateInfo();
       $("#presentation").dequeue();
     })
     
     $($(".slide")[++currentSlide]).show().css({  top: maxSlideHeight }).animate({top: 0}, transitionDuration)
     
+    currentRevealStep = -1
+    
+    updateInfo();
   });
 }
 
@@ -197,10 +196,24 @@ function prevSlide() {
     
     $($(".slide")[currentSlide]).animate({top: maxSlideHeight}, transitionDuration, function() {
       $(this).hide()
+      updateInfo();
       $("#presentation").dequeue();
     })
     
     $($(".slide")[--currentSlide]).show().css({ top: -maxSlideHeight }).animate({top: 0}, transitionDuration)
     
+    currentRevealStep = -1
+    
+    updateInfo();
   });
+}
+
+function goToSlide(num) {
+  console.log("going to slide "+num)
+  currentSlide = num;
+  $(".slide").hide();
+  $($(".slide")[currentSlide]).show().css({top: 0})
+  currentRevealStep = -1
+  
+  updateInfo();
 }
