@@ -1,5 +1,6 @@
-currentSlide = 0;
-currentRevealStep = -1;
+var currentSlide = 0;
+var currentRevealStep = -1;
+var maxSlideHeight = 0;
 
 $(window).load(function () {
   $("#loading").fadeIn();
@@ -81,37 +82,21 @@ $(window).load(function () {
       $("#info").fadeIn()
     })
     
-    var max = 0;
+    $("#presentation .slide").css({ position: 'absolute' })
     
     $("#presentation").show()
     $("#presentation .slide").each(function() {
-      if($(this).height() > max)
-        max = $(this).height()
+      if($(this).height() > maxSlideHeight)
+        maxSlideHeight = $(this).height()
     });
     $("#presentation").hide()
     $("#presentation .slide").hide()
     
     $($(".slide")[0]).show()
     
-    $(".slide").css({ height: max })
+    $(".slide").css({ height: maxSlideHeight })
     
-    $("#presentation").css({ position: 'relative', "height": max })
-    
-    window.setTimeout(function() {
-      $($(".slide")[0]).css({ position: 'absolute' }).animate({top: -max}, 500, function() {
-        $(this).hide()
-      })
-      $($(".slide")[1]).show().css({ position: 'absolute', top: max }).animate({top: 0}, 500)
-    }, 3000)
-    
-    window.setTimeout(function() {
-      $($(".slide")[0]).show().css({ position: 'absolute', top: -max }).animate({top: 0}, 500)
-      
-      $($(".slide")[1]).css({ position: 'absolute' }).animate({top: max}, 500, function() {
-        $(this).hide()
-      })
-    }, 5000)
-    
+    $("#presentation").css({ position: 'relative', "height": maxSlideHeight })
     
   })
   
@@ -151,9 +136,10 @@ function nextStep() {
     }
   else if(getSlide(currentSlide+1)) {
     getSlide(currentSlide, true).addClass('shown')
-    currentSlide++;
     currentRevealStep = -1;
-    $('#presentation').cycle(currentSlide, 'scrollUp')
+    
+    nextSlide();
+    
     if(getSlide(currentSlide, true).hasClass('shown'))
       currentRevealStep = getSlide(currentSlide, true).find("[data-reveal]").length - 1
   }
@@ -176,9 +162,10 @@ function prevStep() {
   else if(getSlide(currentSlide-1)) {
     if(currentRevealStep == reveals.length - 1)
       getSlide(currentSlide, true).addClass('shown')
-    currentSlide--;
-    currentRevealStep = -1;        
-    $('#presentation').cycle(currentSlide, 'scrollDown')
+    
+    currentRevealStep = -1;
+    
+    prevSlide();
     
     if(getSlide(currentSlide, true).hasClass('shown'))
       currentRevealStep = getSlide(currentSlide, true).find("[data-reveal]").length - 1
@@ -188,4 +175,32 @@ function prevStep() {
 
 function updateInfo() {
   $("#info").html(currentSlide+1 + "/" + $("#presentation .slide").length)
+}
+
+var transitionDuration = 150;
+
+function nextSlide() {
+  $("#presentation").queue(function() {
+    
+    $($(".slide")[currentSlide]).animate({top: -maxSlideHeight}, transitionDuration, function() {
+      $(this).hide()
+      $("#presentation").dequeue();
+    })
+    
+    $($(".slide")[++currentSlide]).show().css({  top: maxSlideHeight }).animate({top: 0}, transitionDuration)
+    
+  });
+}
+
+function prevSlide() {
+  $("#presentation").queue(function() {
+    
+    $($(".slide")[currentSlide]).animate({top: maxSlideHeight}, transitionDuration, function() {
+      $(this).hide()
+      $("#presentation").dequeue();
+    })
+    
+    $($(".slide")[--currentSlide]).show().css({ top: -maxSlideHeight }).animate({top: 0}, transitionDuration)
+    
+  });
 }

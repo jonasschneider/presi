@@ -14,8 +14,19 @@ html {
 }
 
 body {
-  background: -moz-linear-gradient(center top , rgba(0, 0, 0, 0.7) 0%, rgba(25, 26, 39, 0.7) 60%, rgba(84, 84, 100, 0.7) 100%), url(/background.gif);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0, 0.7)), color-stop(0.6, rgba(25,26,39, 0.7)), color-stop(1, rgba(84,84,100, 0.7))), url(/background.gif);
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0, rgb(25,26,39)),
+    color-stop(0.86, rgb(84,84,100))
+  );
+  background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(25,26,39) 0%,
+    rgb(84,84,100) 86%
+  );
+
   padding: 0px;
   margin: 0px;
   border: 0px none;
