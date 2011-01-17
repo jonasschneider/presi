@@ -38,14 +38,7 @@ $(window).load(function () {
     })
     
     $("[data-reveal]").css("visibility", "hidden");
-    $("#presentation").show()
-    //setup manual jquery cycle
-    $('#presentation').cycle({
-      timeout: 0,
-      speed: 300,
-      ease: 'easeOutCubic'
-    })
-    $("#presentation").hide()
+
     sh_highlightDocument();
     
     $(window).keydown(function(event) {
@@ -87,6 +80,37 @@ $(window).load(function () {
       $("#presentation").fadeIn()
       $("#info").fadeIn()
     })
+    
+    var max = 0;
+    
+    $("#presentation").show()
+    $("#presentation .slide").each(function() {
+      if($(this).height() > max)
+        max = $(this).height()
+    });
+    $("#presentation").hide()
+    $("#presentation .slide").hide()
+    
+    $($(".slide")[0]).show()
+    
+    $(".slide").css({ height: max })
+    
+    $("#presentation").css({ position: 'relative', "height": max })
+    
+    window.setTimeout(function() {
+      $($(".slide")[0]).css({ position: 'absolute' }).animate({top: -max}, 500, function() {
+        $(this).hide()
+      })
+      $($(".slide")[1]).show().css({ position: 'absolute', top: max }).animate({top: 0}, 500)
+    }, 3000)
+    
+    window.setTimeout(function() {
+      $($(".slide")[0]).show().css({ position: 'absolute', top: -max }).animate({top: 0}, 500)
+      
+      $($(".slide")[1]).css({ position: 'absolute' }).animate({top: max}, 500, function() {
+        $(this).hide()
+      })
+    }, 5000)
     
     
   })
