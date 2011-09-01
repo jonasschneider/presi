@@ -41,6 +41,8 @@ $(window).load(function () {
     sh_highlightDocument();
     
     updateInfo();
+
+    $('#presentation').css('position','fixed');
     
     $(window).keydown(function(event) {
       var key = event.keyCode;
