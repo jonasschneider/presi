@@ -69,6 +69,15 @@ $(window).load(function () {
         goToSlide($("#presentation .slide").length-1)
       
     })
+
+	$(window).click(function(event) {
+
+		if($(event.target).attr('href')){
+			return true
+		}
+
+		nextStep()
+	})
     
     // Load a position from hash or start at the first slide
     if (window.location.hash.length > 1) {
